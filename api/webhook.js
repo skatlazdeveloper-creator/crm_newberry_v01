@@ -3,6 +3,7 @@ import {db,schema} from '../lib/db.js';
 import {authorizedWebhook} from '../lib/security.js';
 import {eventFacts} from '../lib/transform.js';
 async function rawBody(req){
+ if(Buffer.isBuffer(req.rawBody)) return req.rawBody;
  if(Buffer.isBuffer(req.body)) return req.body;
  if(typeof req.body==='string') return Buffer.from(req.body);
  if(req.body&&typeof req.body==='object') return null; // never reconstruct JSON for signature

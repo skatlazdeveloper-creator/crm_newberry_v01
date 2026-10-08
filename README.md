@@ -38,3 +38,15 @@ curl -X POST 'https://SEU-PROJETO.vercel.app/api/import' \
 
 ## Testes
 `npm install && npm test`
+
+
+## Correção do erro "No entrypoint found" (Vercel)
+- `index.js` exporta uma aplicação Express, com rotas `/api/webhook`, `/api/import`, `/api/health` e a página `/`.
+- Configure **Framework Preset = Express** (ou permita detecção automática).
+- **Root Directory**: selecione a pasta que contém `package.json` e `index.js`. Neste ZIP, é `chatwoot-vercel` caso você suba a pasta externa; se copiar apenas o conteúdo da pasta para a raiz do GitHub, deixe Root Directory vazio.
+- Build Command: padrão; Output Directory: padrão. `vercel.json` não cria rotas redundantes.
+- Configure `DATABASE_URL`, `DB_SCHEMA=core`, `WEBHOOK_TOKEN` e `SYNC_TOKEN` nas variáveis de ambiente da Vercel. Use a connection string do Supabase Session Pooler se necessário.
+- Teste `GET /api/health` após executar o SQL de criação das tabelas.
+- Para desenvolvimento local: `npm install && npm start`.
+
+Observação: o botão Atualizar importa JSON fornecido pelo usuário; não baixa relatórios CSV do Chatwoot automaticamente.
